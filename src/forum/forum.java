@@ -40,7 +40,6 @@ public class forum extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(650, 406));
         setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 255));

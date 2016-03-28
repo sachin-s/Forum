@@ -9,6 +9,7 @@ package forum;
 
 
 import java.sql.*;
+import javax.swing.JOptionPane;
 
 
 
@@ -17,23 +18,25 @@ import java.sql.*;
  * @author Sachin
  */
 public class javaconnect {
+   
     
-    public static void main(String args[])
-	{
-		
-		
-		
+   public static Connection connectDb()
+   {
+       
 		try
 		{
 			java.sql.Connection mycon = DriverManager.getConnection("jdbc:mysql://localhost:3306/forum","root","");
-			java.sql.Statement mystat = mycon.createStatement();
-			ResultSet myresult = mystat.executeQuery("select * from user");
-			
+                       
+                       
+                      return mycon;
+                       
 		}catch(Exception e)
 		{
-			e.printStackTrace();
-			
+			JOptionPane.showMessageDialog(null, e);
+			return null;
 		}
-	}
+                
+   
+   }
     
 }
