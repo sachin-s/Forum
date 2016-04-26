@@ -177,17 +177,17 @@ public class Sign_up extends javax.swing.JFrame {
         str[2]="'"+txt_password.getText()+"'";
         
         try{
-            int id;
+            //int id;
             
             conn = javaconnect.connectDb();
             System.out.println("Connected to dbms");
             mystat = conn.createStatement();
-            String sql1 = "select count(*) from user";
-            res = mystat.executeQuery(sql1);
-            res.next();
-            id = res.getInt(1);
-            System.out.println(id);
-            String sql = "insert into user values('"+id+"',"+str[0]+","+str[1]+","+str[2]+")";
+            //String sql1 = "select count(*) from user";
+            //res = mystat.executeQuery(sql1);
+            //res.next();
+            //id = res.getInt(1);
+            //System.out.println(id);
+            String sql = "insert into user values(NULL,"+str[0]+","+str[1]+","+str[2]+")";
             mystat.executeUpdate(sql);
              System.out.println(" insert Statement executed");
             JOptionPane.showMessageDialog(jPanel2,"Registered successfully..");

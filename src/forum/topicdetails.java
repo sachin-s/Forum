@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * @author Sachin
  */
 public class topicdetails extends javax.swing.JFrame {
-    
+    String uid,tid;
     Connection conn= null;
     ResultSet rs = null;
     Statement mystat = null;
@@ -132,6 +132,7 @@ public class topicdetails extends javax.swing.JFrame {
         topics t1;
         try {
             t1 = new topics();
+            t1.getdata(uid);
             t1.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(topicdetails.class.getName()).log(Level.SEVERE, null, ex);
@@ -139,7 +140,11 @@ public class topicdetails extends javax.swing.JFrame {
         
         close();
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    void getdata(String u)
+    {
+    uid = u;
+    
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         String str = question1.getText();
@@ -165,6 +170,15 @@ public class topicdetails extends javax.swing.JFrame {
         }
             System.out.println(sql);
             
+        topics tp1;
+        try {
+            tp1 = new topics();
+            tp1.getdata(uid);
+            tp1.setVisible(true);
+            close();
+        } catch (SQLException ex) {
+            Logger.getLogger(topicdetails.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_jButton2ActionPerformed
 

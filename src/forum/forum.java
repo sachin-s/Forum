@@ -6,6 +6,7 @@
 package forum;
 
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -48,7 +49,6 @@ public class forum extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CSE Forum");
-        setPreferredSize(new java.awt.Dimension(640, 480));
         setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 255));
@@ -69,6 +69,28 @@ public class forum extends javax.swing.JFrame {
         jLabel2.setOpaque(true);
         jLabel2.setPreferredSize(new java.awt.Dimension(100, 35));
 
+        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswordField1ActionPerformed(evt);
+            }
+        });
+        jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jPasswordField1KeyReleased(evt);
+            }
+        });
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
+
         jButton1.setText("Login");
         jButton1.setMaximumSize(new java.awt.Dimension(95, 23));
         jButton1.setMinimumSize(new java.awt.Dimension(95, 23));
@@ -76,6 +98,11 @@ public class forum extends javax.swing.JFrame {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+        jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jButton1KeyReleased(evt);
             }
         });
 
@@ -183,8 +210,9 @@ public class forum extends javax.swing.JFrame {
             System.out.println(sql1);
             if(res.next())
 			{	
-				
+				String s = res.getString("id");
                                  topics tp = new topics();
+                                 tp.getdata(s);
                                  tp.setVisible(true);
                                  
                                 //Forum_main fm = new Forum_main();
@@ -206,6 +234,73 @@ public class forum extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER)
+        {
+            jPasswordField1.requestFocus();
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPasswordField1ActionPerformed
+
+    private void jPasswordField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField1KeyReleased
+
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER)
+        {
+            jButton1.requestFocus();
+        }
+        
+    }//GEN-LAST:event_jPasswordField1KeyReleased
+
+    private void jButton1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyReleased
+        // TODO add your handling code here:
+         if(evt.getKeyCode()==KeyEvent.VK_ENTER)
+        {
+            String str[] = new String[2];
+        str[0] = "'"+jTextField1.getText()+"'";
+        str[1] = "'"+jPasswordField1.getText()+"'";
+        try{
+        conn = javaconnect.connectDb();
+            System.out.println("Connected to dbms");
+            mystat = conn.createStatement();
+             String sql1 = "select * from user where login_name="+str[0]+"and password="+str[1];
+            res = mystat.executeQuery(sql1);
+            System.out.println(sql1);
+            if(res.next())
+			{	
+				String s = res.getString("id");
+                                 topics tp = new topics();
+                                 tp.getdata(s);
+                                 tp.setVisible(true);
+                                 
+                                //Forum_main fm = new Forum_main();
+                                
+                                //fm.getData(res.getString("name"));
+                                //fm.setVisible(true);
+                                close();
+			}
+            else{
+            JOptionPane.showMessageDialog(null,"Invalid login name or password try again or sign up");
+            
+            }
+            
+        }catch(Exception e)
+                {
+                    JOptionPane.showMessageDialog(null,e);
+                
+                }
+        
+        }
+    }//GEN-LAST:event_jButton1KeyReleased
 
     /**
      * @param args the command line arguments

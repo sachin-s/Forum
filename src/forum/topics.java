@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -25,7 +26,7 @@ import javax.swing.event.ListSelectionListener;
  * @author Sachin
  */
 public class topics extends javax.swing.JFrame {
-    
+        String uid,tid;
         Connection conn = null;
     Statement mystat = null;
     ResultSet res = null;
@@ -52,9 +53,9 @@ public class topics extends javax.swing.JFrame {
         jList2 = new javax.swing.JList<>();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(640, 480));
 
         jList2.setBackground(new java.awt.Color(214, 217, 223));
         jList2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(214, 217, 223)));
@@ -76,6 +77,14 @@ public class topics extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Topics");
 
+        jButton3.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        jButton3.setText("Logout");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -89,24 +98,33 @@ public class topics extends javax.swing.JFrame {
                         .addGap(181, 181, 181)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(27, 27, 27))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(84, 84, 84))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
-                .addGap(21, 21, 21))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
         setSize(new java.awt.Dimension(728, 547));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
    
-    
+    void getdata(String u)
+    {
+    uid=u;
+    }
     void setHandlers()
     {
         jList2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -114,22 +132,32 @@ public class topics extends javax.swing.JFrame {
     @Override
     public void valueChanged(ListSelectionEvent e)
     {
+        if (!e.getValueIsAdjusting()){
       
      int idx = jList2.getSelectedIndex();
-     String sql1 = "select question from topics limit "+idx+",1";
+  
+       String sql1 = "select tid from topics limit "+idx+",1";
         try {
             res = mystat.executeQuery(sql1);
-            
              if (res.next()&&idx!=-1)
-          System.out.println("Current question: " + res.getString("question"));
-        else
-          JOptionPane.showMessageDialog(null,"Please choose a topic.");
+             {System.out.println("qwe");
+          tid=res.getString("tid");
+             System.out.println(tid+"  "+uid);
+             
+             Forum_main fm = new Forum_main();
+             fm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+             fm.setVisible(true);
+             fm.getdata(uid, tid);
+             close();
+             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(topics.class.getName()).log(Level.SEVERE, null, ex);
         }
-            System.out.println(sql1);
-        
        
+       
+        
+    }
     }
 });    
         
@@ -170,14 +198,23 @@ public class topics extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         topicdetails tp = new topicdetails();
+        tp.getdata(uid);
         tp.setVisible(true);
         close();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        forum fr = new forum();
+        fr.setVisible(true);
+        close();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
      public void close()
-    {
+    {   System.out.println("123-");
         WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
+        System.out.println("qwerty-");
     }
     /**
      * @param args the command line arguments
@@ -216,10 +253,12 @@ public class topics extends javax.swing.JFrame {
                 }
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane2;
